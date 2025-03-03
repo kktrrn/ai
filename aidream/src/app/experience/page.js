@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react"; // Для работы с состоянием и эффектами
 import Link from "next/link"; // Импортируем Link для перенаправления
+import Image from "next/image";
 
 export default function Experience() {
   const [dreams, setDreams] = useState([]); // Храним сны, полученные с сервера
@@ -39,18 +40,16 @@ export default function Experience() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-gray-900 text-white p-8">
-      <div className="absolute top-0 left-0 w-full h-full z-0 backdrop-blur-2xl">
-        <video
-          autoPlay
-          loop
-          muted
-          playsInline
-          className="object-cover w-full h-full backdrop-opacity-10 opacity-80"
-        >
-          <source src="/video/my-video-4.mp4" type="video/mp4" />
-          The video cannot be played in your browser.
-        </video>
+    <div className="relative min-h-screen flex flex-col items-center justify-center p-8 gap-12 sm:p-20 overflow-hidden">
+      {/* Картинка как фон */}
+      <div className="absolute top-0 left-0 w-full h-full z-0">
+        <Image
+          src="/images/pic.jpeg"
+          alt="Dreamy background"
+          layout="fill"
+          objectFit="cover"
+          className="opacity-80"
+        />
       </div>
 
       <h2 className="z-10 text-4xl sm:text-5xl font-bold text-emerald-950 text-center font-mono drop-shadow-md hover:drop-shadow-xl transition-all duration-300">

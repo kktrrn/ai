@@ -1,20 +1,18 @@
 import Link from "next/link";
+import Image from "next/image";
 
 export default function Explore() {
   return (
-    <div className=" relative min-h-screen flex flex-col items-center justify-center p-8 gap-12 sm:p-20 overflow-hidden">
-      {/* Видео как фон */}
-      <div className="absolute top-0 left-0 w-full h-full z-0 backdrop-blur-2xl">
-        <video
-          autoPlay
-          loop
-          muted
-          playsInline
-          className="object-cover w-full h-full backdrop-opacity-10 opacity-80"
-        >
-          <source src="/video/my-video-4.mp4" type="video/mp4" />
-          The video cannot be played in your browser.
-        </video>
+    <div className="relative min-h-screen flex flex-col items-center justify-center p-8 gap-12 sm:p-20 overflow-hidden">
+      {/* Картинка как фон */}
+      <div className="absolute top-0 left-0 w-full h-full z-0">
+        <Image
+          src="/images/pic.jpeg"
+          alt="Dreamy background"
+          layout="fill"
+          objectFit="cover"
+          className="opacity-80"
+        />
       </div>
 
       <Link href="/" passHref>
