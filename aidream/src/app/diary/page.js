@@ -42,8 +42,7 @@ export default function Diary() {
           src="/images/pic.jpeg"
           alt="Dreamy background"
           layout="fill"
-          objectFit="cover"
-          className="opacity-80"
+          className="background-image" // применяем наш класс
         />
       </div>
 

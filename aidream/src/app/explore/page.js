@@ -10,8 +10,7 @@ export default function Explore() {
           src="/images/pic.jpeg"
           alt="Dreamy background"
           layout="fill"
-          objectFit="cover"
-          className="opacity-80"
+          className="background-image" // применяем наш класс
         />
       </div>
 
