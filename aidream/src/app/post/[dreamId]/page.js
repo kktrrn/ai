@@ -10,6 +10,8 @@ export default function Post() {
   const [dream, setDream] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null); // Состояние для ошибки
+  const [isEditing, setIsEditing] = useState(false); // Состояние для режима редактирования
+  const [newText, setNewText] = useState(""); // Состояние для нового текста
 
   useEffect(() => {
     const fetchDream = async () => {
@@ -29,6 +31,7 @@ export default function Post() {
 
         const data = await response.json();
         setDream(data); // Сохраняем данные о сне
+        setNewText(data.text); // Заполняем состояние новым текстом
       } catch (error) {
         console.error("Error fetching dream:", error);
         setError(error.message); // Устанавливаем ошибку
@@ -40,26 +43,51 @@ export default function Post() {
     fetchDream();
   }, [dreamId]); // Запрос при изменении dreamId
 
-  // Обработчики для кнопок (редактирование и удаление)
-  const handleEdit = () => {
-    // Перенаправление на страницу редактирования
-    console.log("Editing dream", dreamId);
-    // Например, перенаправление на /edit-dream/<dreamId>
+  // Обработчик для кнопки редактирования
+  const handleEdit = async () => {
+    if (newText !== dream.text) {
+      try {
+        const response = await fetch(`/api/test/update-dreams/${dreamId}`, {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ text: newText }),
+        });
+
+        if (response.ok) {
+          alert("Dream updated successfully!");
+          setDream((prevDream) => ({ ...prevDream, text: newText }));
+        } else {
+          throw new Error("Failed to update dream");
+        }
+      } catch (error) {
+        console.error("Error updating dream:", error);
+        alert("Error updating dream");
+      }
+    }
+    setIsEditing(false); // Закрываем режим редактирования
   };
 
+  // Обработчик для кнопки отмены редактирования
+  const handleCancelEdit = () => {
+    setNewText(dream.text); // Восстановить исходный текст
+    setIsEditing(false); // Закрыть режим редактирования
+  };
+
+  // Обработчик для кнопки удаления
   const handleDelete = async () => {
     if (window.confirm("Are you sure you want to delete this dream?")) {
       try {
-        const response = await fetch(`/api/test/delete-dream/${dreamId}`, {
+        const response = await fetch(`/api/test/delete-dreams/${dreamId}`, {
           method: "DELETE",
         });
 
         if (response.ok) {
           alert("Dream deleted successfully!");
-          // Перенаправление на страницу списка снов
-          window.location.href = "/experience";
+          window.location.href = "/experience"; // Перенаправляем на список снов
         } else {
-          throw new Error("Failed to delete the dream");
+          throw new Error("Failed to delete dream");
         }
       } catch (error) {
         console.error("Error deleting dream:", error);
@@ -90,26 +118,52 @@ export default function Post() {
         {loading ? (
           <p className="text-center mt-8">Loading...</p>
         ) : error ? (
-          <p className="text-center text-red-500">{error}</p> // Отображаем ошибку
+          <p className="text-center text-red-500">{error}</p>
         ) : dream ? (
           <>
-            <h2 className="text-2xl font-mono text-white mb-4">{dream.text}</h2>
-
-            {/* Кнопки для редактирования и удаления */}
-            <div className="flex justify-center gap-4 mt-6">
-              <button
-                onClick={handleEdit}
-                className="z-10 font-mono text-yellow-400 hover:underline"
-              >
-                Edit
-              </button>
-              <button
-                onClick={handleDelete}
-                className="z-10 font-mono text-red-400 hover:underline"
-              >
-                Delete
-              </button>
-            </div>
+            {isEditing ? (
+              <div>
+                <textarea
+                  className="w-full h-32 p-2 border border-gray-300 rounded-lg text-white bg-black bg-opacity-30"
+                  value={newText}
+                  onChange={(e) => setNewText(e.target.value)}
+                ></textarea>
+                <div className="flex justify-between mt-4">
+                  <button
+                    onClick={handleEdit}
+                    className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600"
+                  >
+                    Save
+                  </button>
+                  <button
+                    onClick={handleCancelEdit}
+                    className="px-4 py-2 bg-gray-500 text-white rounded-md hover:bg-gray-600"
+                  >
+                    Cancel
+                  </button>
+                </div>
+              </div>
+            ) : (
+              <>
+                <h2 className="text-2xl font-mono text-white mb-4">
+                  {dream.text}
+                </h2>
+                <div className="flex justify-center gap-4 mt-6">
+                  <button
+                    onClick={() => setIsEditing(true)}
+                    className="z-10 font-mono text-yellow-400 hover:underline"
+                  >
+                    Edit
+                  </button>
+                  <button
+                    onClick={handleDelete}
+                    className="z-10 font-mono text-red-400 hover:underline"
+                  >
+                    Delete
+                  </button>
+                </div>
+              </>
+            )}
           </>
         ) : (
           <p className="text-center font-mono text-gray-400">Dream not found</p>
