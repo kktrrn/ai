@@ -16,7 +16,7 @@ export default function Experience() {
       console.log("Fetched dreams:", data); // Выводим данные для отладки
       if (response.ok) {
         // Обновляем состояние снов и обрезаем до первых 5 постов
-        setDreams(data.slice(0, 5));
+        setDreams(data.reverse().slice(0, 5));
       } else {
         console.error("Failed to fetch dreams:", data);
       }
