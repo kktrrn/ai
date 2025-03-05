@@ -52,15 +52,19 @@ export default function Experience() {
         />
       </div>
 
-      <h2 className="z-10 text-4xl sm:text-5xl font-bold text-emerald-950 text-center font-mono drop-shadow-md hover:drop-shadow-xl transition-all duration-300">
-        Dream Experiences
-      </h2>
+      <Link href="/" passHref>
+        <h2 className="z-10 text-4xl sm:text-5xl font-bold text-emerald-950 text-center font-mono drop-shadow-md hover:drop-shadow-xl transition-all duration-300">
+          Dream Experiences
+        </h2>
+      </Link>
 
       {/* Состояние загрузки */}
       {loading ? (
         <p className="text-center mt-8">Loading...</p>
       ) : (
-        <div className="z-10 mt-6 w-full max-w-lg bg-black bg-opacity-30 p-4 rounded-lg">
+        <div className="z-10 mt-1 w-full max-w-lg bg-black bg-opacity-30 p-4 rounded-lg">
+          {" "}
+          {/* изменили mt-2 на mt-1 */}
           {/* Если сны есть, выводим их */}
           {dreams.length > 0 ? (
             <ul className="space-y-4">
@@ -92,7 +96,9 @@ export default function Experience() {
       )}
 
       {/* Кнопка для добавления нового поста */}
-      <div className="z-10 mt-12 flex justify-center gap-6">
+      <div className="z-10 flex justify-center">
+        {" "}
+        {/* изменили mt-6 на mt-4 */}
         <Link
           href="/diary" // Перенаправляем на страницу diary
           className="opacity-75 font-mono rounded-full border border-solid border-transparent transition-all duration-300 ease-in-out flex items-center justify-center text-white text-sm sm:text-base h-12 sm:h-14 px-6 sm:px-8 hover:shadow-[0_0_15px_#ffffff] hover:scale-105"

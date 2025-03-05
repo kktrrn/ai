@@ -109,9 +109,11 @@ export default function Post() {
       </div>
 
       {/* Title */}
-      <h1 className="z-10 text-4xl sm:text-5xl font-bold text-emerald-950 text-center font-mono drop-shadow-md hover:drop-shadow-xl transition-all duration-300">
-        Post Details
-      </h1>
+      <Link href="/experience" passHref>
+        <h1 className="z-10 text-4xl sm:text-5xl font-bold text-emerald-950 text-center font-mono drop-shadow-md hover:drop-shadow-xl transition-all duration-300">
+          Post Details
+        </h1>
+      </Link>
 
       {/* Content */}
       <div className="z-10 mt-6 w-full max-w-lg bg-black bg-opacity-30 p-4 rounded-lg text-white">
