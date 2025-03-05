@@ -41,7 +41,7 @@ export default function Diary() {
         <Image
           src="/images/pic.jpeg"
           alt="Dreamy background"
-          layout="fill"
+          fill
           className="background-image" // применяем наш класс
         />
       </div>

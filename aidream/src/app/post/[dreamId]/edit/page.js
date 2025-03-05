@@ -1,5 +1,3 @@
-// src/app/post/[dreamId]/edit/page.js
-
 "use client"; // Для использования хуков в Next.js
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router"; // Для получения dreamId из маршрута
@@ -14,10 +12,10 @@ export default function EditDream() {
     if (dreamId) {
       const fetchDream = async () => {
         try {
-          const response = await fetch(`/api/test/get-dreams/${dreamId}`);
+          const response = await fetch(`/api/test/get-dream/${dreamId}`);
           const data = await response.json();
           if (response.ok) {
-            setDreamDescription(data.text);
+            setDreamDescription(data.text); // Загружаем описание
           } else {
             console.error("Failed to fetch dream:", data);
           }
@@ -37,17 +35,22 @@ export default function EditDream() {
       return;
     }
 
-    const response = await fetch(`/api/test/get-dreams/${dreamId}`, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ text: dreamDescription }),
-    });
+    try {
+      const response = await fetch(`/api/test/get-dreams/${dreamId}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ text: dreamDescription }),
+      });
 
-    if (response.ok) {
-      router.push(`/post/${dreamId}`); // Перенаправляем обратно на страницу с постом
-    } else {
+      if (response.ok) {
+        router.push(`/post/${dreamId}`); // Перенаправляем обратно на страницу с постом
+      } else {
+        alert("Failed to save changes!");
+      }
+    } catch (error) {
+      console.error("Error saving changes:", error);
       alert("Failed to save changes!");
     }
   };

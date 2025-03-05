@@ -13,6 +13,7 @@ export default function Experience() {
     try {
       const response = await fetch("/api/test/get-dreams"); // Запрашиваем сны с сервера
       const data = await response.json();
+      console.log("Fetched dreams:", data); // Выводим данные для отладки
       if (response.ok) {
         // Обновляем состояние снов и обрезаем до первых 5 постов
         setDreams(data.slice(0, 5));
@@ -46,7 +47,7 @@ export default function Experience() {
         <Image
           src="/images/pic.jpeg"
           alt="Dreamy background"
-          layout="fill"
+          fill
           className="background-image" // применяем наш класс
         />
       </div>

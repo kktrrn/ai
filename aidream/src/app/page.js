@@ -5,29 +5,34 @@ import Image from "next/image";
 import Link from "next/link";
 
 export default function Home() {
-  const [dream, setDream] = useState(""); // Состояние для текста сна
-  const [response, setResponse] = useState(""); // Состояние для ответа OpenAI
-  const [loading, setLoading] = useState(false); // Состояние загрузки
+  const [dream, setDream] = useState(""); // State to store the dream text
+  const [response, setResponse] = useState(""); // State to store OpenAI response
+  const [loading, setLoading] = useState(false); // State to indicate loading status
 
-  // Функция для запроса к OpenAI API
+  // Function to make a request to OpenAI API
   const getDreamInterpretation = async () => {
-    if (!dream.trim()) return; // Если пустой ввод, ничего не делать
+    if (!dream.trim()) return; // Do nothing if input is empty
 
     setLoading(true);
-    setResponse(""); // Очистка предыдущего ответа
+    setResponse(""); // Clear previous response
 
     try {
-      const res = await fetch("/api/interpret", {
+      // Send request to server's /api/interpret endpoint
+      const res = await fetch("http://localhost:5001/api/interpret", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ dream }),
+        body: JSON.stringify({ prompt: dream }), // Send prompt instead of dream
       });
 
       const data = await res.json();
-      setResponse(data.result || "Something went wrong. Try again.");
+      console.log("Response data:", data);
+
+      // Set the response from OpenAI or show an error message
+      setResponse(data.response || "Something went wrong. Please try again.");
     } catch (error) {
+      console.error("Error fetching interpretation:", error);
       setResponse("Error fetching interpretation.");
     } finally {
       setLoading(false);
@@ -36,22 +41,22 @@ export default function Home() {
 
   return (
     <div className="relative min-h-screen flex flex-col items-center justify-center p-8 gap-12 sm:p-20 overflow-hidden">
-      {/* Картинка как фон */}
+      {/* Background image */}
       <div className="absolute top-0 left-0 w-full h-full z-0">
         <Image
           src="/images/pic.jpeg"
           alt="Dreamy background"
-          layout="fill"
-          className="background-image" // применяем наш класс
+          fill
+          className="background-image"
         />
       </div>
 
-      {/* Заголовок */}
+      {/* Title */}
       <h1 className="z-10 text-4xl sm:text-5xl font-bold text-emerald-950 text-center font-mono drop-shadow-md hover:drop-shadow-xl transition-all duration-300">
         Dreamer AI
       </h1>
 
-      {/* Поле для ввода */}
+      {/* Text area for input */}
       <div className="z-10 flex flex-col items-center gap-4 w-full max-w-md">
         <textarea
           id="dream-description"
@@ -62,7 +67,7 @@ export default function Home() {
         />
       </div>
 
-      {/* Кнопки */}
+      {/* Buttons */}
       <div className="flex gap-4">
         <button
           onClick={getDreamInterpretation}
@@ -79,7 +84,7 @@ export default function Home() {
         </Link>
       </div>
 
-      {/* Ответ OpenAI */}
+      {/* OpenAI response */}
       {response && (
         <div className="z-10 max-w-lg p-4 mt-6 bg-white bg-opacity-20 rounded-lg shadow-lg text-white text-center">
           <h2 className="text-lg font-semibold">Interpretation:</h2>

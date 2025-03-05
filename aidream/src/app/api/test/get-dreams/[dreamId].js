@@ -5,8 +5,20 @@ export default async function handler(req, res) {
   const { method } = req; // Метод запроса
   const { dreamId } = req.query; // Получаем dreamId из параметров запроса
 
+  // Проверка на допустимость формата dreamId
+  if (!ObjectId.isValid(dreamId)) {
+    return res.status(400).json({ message: "Invalid Dream ID" });
+  }
+
   // Подключение к базе данных
-  const { db } = await connectToDatabase();
+  let db;
+  try {
+    const { db: connectedDb } = await connectToDatabase(); // Подключение к базе данных
+    db = connectedDb;
+  } catch (error) {
+    console.error("Error connecting to database:", error);
+    return res.status(500).json({ message: "Database connection error" });
+  }
 
   switch (method) {
     case "GET":
