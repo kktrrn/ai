@@ -133,13 +133,13 @@ export default function Post() {
                 <div className="flex justify-between mt-4">
                   <button
                     onClick={handleEdit}
-                    className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600"
+                    className="px-4 font-mono py-2 bg-emerald-800 text-white rounded-md hover:bg-emerald-600"
                   >
                     Save
                   </button>
                   <button
                     onClick={handleCancelEdit}
-                    className="px-4 py-2 bg-gray-500 text-white rounded-md hover:bg-gray-600"
+                    className="px-4 font-mono py-2 bg-gray-500 text-white rounded-md hover:bg-gray-600"
                   >
                     Cancel
                   </button>
@@ -150,16 +150,22 @@ export default function Post() {
                 <h2 className="text-2xl font-mono text-white mb-4">
                   {dream.text}
                 </h2>
-                <div className="flex justify-center gap-4 mt-6">
+                <div className="flex justify-between mt-6">
+                  <Link
+                    href="/experience"
+                    className=" text-blue-300 font-mono rounded-full border border-solid border-transparent transition-all duration-300 ease-in-out flex items-center justify-center text-yellow text-sm sm:text-base h-12 sm:h-14 px-6 sm:px-8 hover:shadow-[0_0_15px_#ffffff] hover:scale-105"
+                  >
+                    Back
+                  </Link>
                   <button
                     onClick={() => setIsEditing(true)}
-                    className="z-10 font-mono text-yellow-400 hover:underline"
+                    className=" text-yellow-500 font-mono rounded-full border border-solid border-transparent transition-all duration-300 ease-in-out flex items-center justify-center text-yellow text-sm sm:text-base h-12 sm:h-14 px-6 sm:px-8 hover:shadow-[0_0_15px_#ffffff] hover:scale-105"
                   >
                     Edit
                   </button>
                   <button
                     onClick={handleDelete}
-                    className="z-10 font-mono text-red-400 hover:underline"
+                    className=" text-red-500 font-mono rounded-full border border-solid border-transparent transition-all duration-300 ease-in-out flex items-center justify-center text-yellow text-sm sm:text-base h-12 sm:h-14 px-6 sm:px-8 hover:shadow-[0_0_15px_#ffffff] hover:scale-105"
                   >
                     Delete
                   </button>
@@ -171,13 +177,6 @@ export default function Post() {
           <p className="text-center font-mono text-gray-400">Dream not found</p>
         )}
       </div>
-
-      <Link
-        href="/experience"
-        className="z-10 mt-6 text-blue-500 hover:underline"
-      >
-        Back to Dreams List
-      </Link>
     </div>
   );
 }

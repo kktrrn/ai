@@ -28,7 +28,7 @@ export default function Explore() {
         With this journal we invite you to explore your dreams with an open mind
         and a sense of curiosity.
       </p>
-      <p className="font-semibold z-10 italic font-mono text-center text-emerald-950 animate-fade-in">
+      <p className="font-semibold z-10 italic font-mono text-center text-yellow-400 animate-fade-in">
         Don’t take everything too seriously, self-reflection can be enjoyable
         too.
       </p>
