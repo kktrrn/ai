@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import Image from "next/image";
 import Link from "next/link";
 
 export default function Home() {
@@ -51,14 +50,12 @@ export default function Home() {
 
   return (
     <div className="relative min-h-screen flex flex-col items-center justify-center p-8 gap-12 sm:p-20 overflow-hidden font-mono">
-      {/* Background image */}
+      {/* Background video */}
       <div className="absolute top-0 left-0 w-full h-full z-0">
-        <Image
-          src="/images/pic.jpeg"
-          alt="Dreamy background"
-          fill
-          className="background-image"
-        />
+        <video autoPlay loop muted className="object-cover w-full h-full">
+          <source src="/video/vid.mp4" type="video/mp4" />
+          Your browser does not support the video tag.
+        </video>
       </div>
 
       {/* Title */}

@@ -3,15 +3,13 @@ import Image from "next/image";
 
 export default function Explore() {
   return (
-    <div className="relative min-h-screen flex flex-col items-center justify-center p-8 gap-12 sm:p-20 overflow-hidden">
-      {/* Картинка как фон */}
+    <div className="relative min-h-screen flex flex-col items-center justify-center p-8 gap-12 sm:p-20 overflow-hidden font-mono">
+      {/* Background video */}
       <div className="absolute top-0 left-0 w-full h-full z-0">
-        <Image
-          src="/images/pic.jpeg"
-          alt="Dreamy background"
-          fill
-          className="background-image" // применяем наш класс
-        />
+        <video autoPlay loop muted className="object-cover w-full h-full">
+          <source src="/video/vid.mp4" type="video/mp4" />
+          Your browser does not support the video tag.
+        </video>
       </div>
 
       <Link href="/" passHref>
