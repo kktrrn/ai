@@ -120,7 +120,7 @@ export default function Diary() {
           onClick={handleGenerateImage}
           disabled={isLoading} // Отключаем кнопку, пока идет загрузка
           className={`opacity-75 font-mono rounded-full border border-solid border-transparent transition-all duration-300 ease-in-out flex items-center justify-center text-white text-sm sm:text-base h-12 sm:h-14 px-6 sm:px-8 hover:shadow-[0_0_15px_#ffffff] hover:scale-105 ${
-            isLoading ? "bg-gray-500 cursor-not-allowed" : ""
+            isLoading ? "cursor-not-allowed" : ""
           }`}
         >
           {isLoading ? "Loading..." : "Generate an image"}
