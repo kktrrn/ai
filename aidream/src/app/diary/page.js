@@ -2,10 +2,12 @@
 
 import { useState } from "react"; // Для работы с состоянием
 import Link from "next/link"; // Для ссылок
-import Image from "next/image";
+import Image from "next/image"; // Для отображения изображений
 
 export default function Diary() {
   const [dreamDescription, setDreamDescription] = useState(""); // Храним описание сна
+  const [imageUrl, setImageUrl] = useState(""); // Храним URL изображения
+  const [isLoading, setIsLoading] = useState(false); // Состояние для кнопки (загружается ли изображение?)
 
   const handleInputChange = (e) => {
     setDreamDescription(e.target.value); // Обработчик изменения текста
@@ -17,20 +19,59 @@ export default function Diary() {
       return;
     }
 
-    // Отправляем данные на сервер
-    const response = await fetch("/api/test/save-dream", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ text: dreamDescription }), // Отправляем текст сна
-    });
+    // Отправляем данные на сервер для сохранения сна
+    try {
+      const response = await fetch("/api/test/save-dream", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ text: dreamDescription }), // Отправляем текст сна
+      });
 
-    if (response.ok) {
-      alert("Dream saved successfully!");
-      setDreamDescription(""); // Очищаем поле после сохранения
-    } else {
-      alert("Something went wrong!");
+      if (response.ok) {
+        alert("Dream saved successfully!");
+        setDreamDescription(""); // Очищаем поле после сохранения
+      } else {
+        const errorData = await response.json();
+        alert(`Error: ${errorData.error || "Something went wrong!"}`);
+      }
+    } catch (error) {
+      console.error("Error saving dream:", error);
+      alert("An error occurred while saving the dream.");
+    }
+  };
+
+  const handleGenerateImage = async () => {
+    if (!dreamDescription.trim()) {
+      alert("Please write a description to generate an image!");
+      return;
+    }
+
+    setIsLoading(true); // Устанавливаем состояние загрузки
+
+    // Отправляем запрос на сервер для генерации изображения
+    try {
+      const response = await fetch("/api/generate-image", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ description: dreamDescription }),
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        setImageUrl(data.imageUrl); // Сохраняем URL изображения
+      } else {
+        const errorData = await response.json();
+        alert(`Error: ${errorData.error || "Failed to generate image!"}`);
+      }
+    } catch (error) {
+      console.error("Error generating image:", error);
+      alert("An error occurred while generating the image.");
+    } finally {
+      setIsLoading(false); // Сбрасываем состояние загрузки
     }
   };
 
@@ -61,8 +102,6 @@ export default function Diary() {
       </div>
 
       <div className="z-10 mt-6 flex gap-6">
-        {" "}
-        {/* Добавляем flex контейнер для кнопок */}
         <button
           onClick={handleSaveDream}
           className="opacity-75 font-mono rounded-full border border-solid border-transparent transition-all duration-300 ease-in-out flex items-center justify-center text-white text-sm sm:text-base h-12 sm:h-14 px-6 sm:px-8 hover:shadow-[0_0_15px_#ffffff] hover:scale-105"
@@ -75,7 +114,36 @@ export default function Diary() {
         >
           Experience
         </Link>
+
+        {/* Кнопка для генерации изображения */}
+        <button
+          onClick={handleGenerateImage}
+          disabled={isLoading} // Отключаем кнопку, пока идет загрузка
+          className={`opacity-75 font-mono rounded-full border border-solid border-transparent transition-all duration-300 ease-in-out flex items-center justify-center text-white text-sm sm:text-base h-12 sm:h-14 px-6 sm:px-8 hover:shadow-[0_0_15px_#ffffff] hover:scale-105 ${
+            isLoading ? "bg-gray-500 cursor-not-allowed" : ""
+          }`}
+        >
+          {isLoading ? "Loading..." : "Generate an image"}
+        </button>
       </div>
+
+      {/* Отображаем изображение, если оно есть */}
+      {imageUrl && (
+        <div className="mt-6 z-10">
+          <h3 className="text-white text-lg font-mono">Generated Image:</h3>
+          <Image
+            src={imageUrl}
+            alt="Generated image"
+            width={512} // Размер изображения, как в Instagram (500px)
+            height={512} // Устанавливаем высоту изображения
+            style={{
+              objectFit: "cover", // Обрезаем изображение, чтобы оно красиво заполнило контейнер
+              borderRadius: "12px", // Радиус углов для изображения
+            }}
+            className="rounded-lg"
+          />
+        </div>
+      )}
     </div>
   );
 }
