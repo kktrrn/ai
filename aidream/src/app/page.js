@@ -4,34 +4,29 @@ import { useState } from "react";
 import Link from "next/link";
 
 export default function Home() {
-  const [dream, setDream] = useState(""); // State to store the dream text
-  const [response, setResponse] = useState(""); // State to store OpenAI response
-  const [loading, setLoading] = useState(false); // State to indicate loading status
+  const [dream, setDream] = useState(""); // Для хранения текста сновидения
+  const [response, setResponse] = useState(""); // Для хранения ответа от OpenAI
+  const [loading, setLoading] = useState(false); // Статус загрузки
 
-  // Function to make a request to OpenAI API
+  // Функция для запроса интерпретации сновидения
   const getDreamInterpretation = async () => {
-    if (!dream.trim()) return; // Do nothing if input is empty
+    if (!dream.trim()) return;
 
     setLoading(true);
-    setResponse(""); // Clear previous response
+    setResponse(""); // Очищаем предыдущий ответ
 
     try {
-      // Send request to server's /api/interpret endpoint
-      const res = await fetch("http://localhost:5001/api/interpret", {
+      const res = await fetch("/api/interpret", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ prompt: dream }), // Send prompt instead of dream
+        body: JSON.stringify({ dream }), // Отправляем текст сновидения
       });
 
       const data = await res.json();
-      console.log("Response data:", data);
-
-      // Set the response from OpenAI or show an error message
-      setResponse(data.response || "Something went wrong. Please try again.");
+      setResponse(data.result); // Получаем интерпретацию сновидения
     } catch (error) {
-      console.error("Error fetching interpretation:", error);
       setResponse("Error fetching interpretation.");
     } finally {
       setLoading(false);
@@ -39,13 +34,13 @@ export default function Home() {
   };
 
   const handleSave = () => {
-    // Logic for saving the dream interpretation
+    // Логика для сохранения интерпретации
     alert("Interpretation saved!");
   };
 
   const handleTryAgain = () => {
-    setDream(""); // Clear the dream input field
-    setResponse(""); // Clear the response
+    setDream(""); // Очищаем поле ввода
+    setResponse(""); // Очищаем ответ
   };
 
   return (

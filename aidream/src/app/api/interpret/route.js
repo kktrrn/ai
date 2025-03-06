@@ -1,39 +1,35 @@
-import { NextResponse } from "next/server";
+// src/app/api/interpret/route.js
+
+import { OpenAI } from "openai"; // Подключаем библиотеку OpenAI
+
+// Создаем экземпляр клиента OpenAI
+const openai = new OpenAI({
+  apiKey: process.env.OPENAI_API_KEY, // Ваш API ключ
+});
 
 export async function POST(req) {
   try {
-    const { dream } = await req.json();
+    const { dream } = await req.json(); // Получаем текст сновидения
 
-    // Send the request to OpenAI's API
-    const openaiRes = await fetch(
-      "https://api.openai.com/v1/chat/completions",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${process.env.OPENAI_API_KEY}`,
-        },
-        body: JSON.stringify({
-          model: "gpt-4-mini", // Use gpt-4-mini model
-          messages: [
-            { role: "system", content: "You are a dream interpreter." },
-            { role: "user", content: dream },
-          ],
-          max_tokens: 150,
-        }),
-      }
+    // Отправляем запрос в OpenAI API для интерпретации
+    const response = await openai.chat.completions.create({
+      model: "gpt-4", // Модель для интерпретации
+      messages: [
+        { role: "system", content: "You are a dream interpreter." },
+        { role: "user", content: dream },
+      ],
+      max_tokens: 150, // Максимальное количество токенов
+    });
+
+    // Возвращаем результат клиенту
+    return new Response(
+      JSON.stringify({ result: response.choices[0].message.content }),
+      { status: 200 }
     );
-
-    const data = await openaiRes.json();
-    console.log("OpenAI response:", data);
-
-    // Return the result from OpenAI to the client
-    return NextResponse.json({ result: data.choices[0].message.content });
   } catch (error) {
-    // Log any errors and return a 500 status with a message
     console.error("Failed to interpret the dream:", error);
-    return NextResponse.json(
-      { error: "Failed to interpret the dream." },
+    return new Response(
+      JSON.stringify({ error: "Failed to interpret the dream." }),
       { status: 500 }
     );
   }
