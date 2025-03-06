@@ -6,6 +6,10 @@ const dreamSchema = new mongoose.Schema({
     type: String,
     required: true, // поле обязательно
   },
+  imageUrl: {
+    type: String, // Для хранения URL изображения
+    required: false, // Не обязательно
+  },
   createdAt: {
     type: Date,
     default: Date.now,

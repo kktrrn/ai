@@ -121,6 +121,21 @@ export default function Post() {
           <p className="text-center text-red-500">{error}</p>
         ) : dream ? (
           <>
+            {dream.imageUrl && (
+              <div className="flex justify-center mb-4">
+                <Image
+                  src={dream.imageUrl}
+                  alt="Dream image"
+                  width={350}
+                  height={350}
+                  style={{
+                    objectFit: "cover",
+                    borderRadius: "12px",
+                  }}
+                />
+              </div>
+            )}
+
             {isEditing ? (
               <div>
                 <textarea

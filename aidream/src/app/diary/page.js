@@ -19,19 +19,23 @@ export default function Diary() {
       return;
     }
 
-    // Отправляем данные на сервер для сохранения сна
+    // Отправляем данные на сервер для сохранения сна с изображением
     try {
       const response = await fetch("/api/test/save-dream", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ text: dreamDescription }), // Отправляем текст сна
+        body: JSON.stringify({
+          text: dreamDescription,
+          imageUrl, // Добавляем URL изображения
+        }), // Отправляем текст сна и URL изображения
       });
 
       if (response.ok) {
         alert("Dream saved successfully!");
         setDreamDescription(""); // Очищаем поле после сохранения
+        setImageUrl(""); // Очищаем URL изображения после сохранения
       } else {
         const errorData = await response.json();
         alert(`Error: ${errorData.error || "Something went wrong!"}`);

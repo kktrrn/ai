@@ -3,13 +3,14 @@ import Dream from "@/app/models/Dream.js"; // Модель для работы �
 
 export async function POST(req) {
   try {
-    const { text } = await req.json(); // Получаем данные из тела запроса
+    const { text, imageUrl } = await req.json(); // Получаем данные из тела запроса
 
     await connectToDatabase(); // Подключаемся к базе данных
 
     // Создаем новый объект сновидения
     const newDream = new Dream({
       text,
+      imageUrl: imageUrl || "", // Если изображения нет, сохраняем пустую строку
       createdAt: new Date(),
     });
 
