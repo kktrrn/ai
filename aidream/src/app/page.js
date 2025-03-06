@@ -96,14 +96,6 @@ export default function Home() {
 
           {/* Buttons to Save or Try Again */}
           <div className="flex justify-center gap-4 mt-4">
-            {/* Save Button */}
-            <button
-              onClick={handleSave}
-              className=" text-blue-700 font-mono rounded-full border border-solid border-transparent transition-all duration-300 ease-in-out flex items-center justify-center text-yellow text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-6 hover:shadow-[0_0_15px_#ffffff] hover:scale-105"
-            >
-              Save
-            </button>
-
             {/* Try Again Button */}
             <button
               onClick={handleTryAgain}
