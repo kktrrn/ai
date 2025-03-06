@@ -101,6 +101,23 @@ export default function Diary() {
         />
       </div>
 
+      {/* Картинка появляется тут, между полем для ввода и кнопками */}
+      {imageUrl && (
+        <div className="mt-6 z-10 w-full max-w-md flex justify-center">
+          <Image
+            src={imageUrl}
+            alt="Generated image"
+            width={350} // Размер изображения, как в Instagram (500px)
+            height={350} // Устанавливаем высоту изображения
+            style={{
+              objectFit: "cover", // Обрезаем изображение, чтобы оно красиво заполнило контейнер
+              borderRadius: "12px", // Радиус углов для изображения
+            }}
+            className="rounded-lg"
+          />
+        </div>
+      )}
+
       <div className="z-10 mt-6 flex gap-6">
         <button
           onClick={handleSaveDream}
@@ -126,24 +143,6 @@ export default function Diary() {
           {isLoading ? "Loading..." : "Generate an image"}
         </button>
       </div>
-
-      {/* Отображаем изображение, если оно есть */}
-      {imageUrl && (
-        <div className="mt-6 z-10">
-          <h3 className="text-white text-lg font-mono">Generated Image:</h3>
-          <Image
-            src={imageUrl}
-            alt="Generated image"
-            width={512} // Размер изображения, как в Instagram (500px)
-            height={512} // Устанавливаем высоту изображения
-            style={{
-              objectFit: "cover", // Обрезаем изображение, чтобы оно красиво заполнило контейнер
-              borderRadius: "12px", // Радиус углов для изображения
-            }}
-            className="rounded-lg"
-          />
-        </div>
-      )}
     </div>
   );
 }
