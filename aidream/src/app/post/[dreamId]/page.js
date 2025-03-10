@@ -1,17 +1,17 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { useParams } from "next/navigation"; // Для получения параметров маршрута
+import { useParams } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
 
 export default function Post() {
-  const { dreamId } = useParams(); // Извлекаем dreamId из URL
+  const { dreamId } = useParams();
   const [dream, setDream] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null); // Состояние для ошибки
-  const [isEditing, setIsEditing] = useState(false); // Состояние для режима редактирования
-  const [newText, setNewText] = useState(""); // Состояние для нового текста
+  const [error, setError] = useState(null);
+  const [isEditing, setIsEditing] = useState(false);
+  const [newText, setNewText] = useState("");
 
   useEffect(() => {
     const fetchDream = async () => {
@@ -20,7 +20,7 @@ export default function Post() {
       try {
         const response = await fetch(`/api/test/get-dreams/${dreamId}`);
         if (!response.ok) {
-          throw new Error(`Error: ${response.statusText}`); // Если ответ не успешный
+          throw new Error(`Error: ${response.statusText}`);
         }
 
         // Проверка, является ли тело ответа JSON
