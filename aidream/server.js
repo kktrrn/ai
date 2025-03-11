@@ -10,7 +10,8 @@ const PORT = 5001;
 const corsOptions = {
   origin: [
     "http://localhost:3000", // Локальный хост
-    "https://ai-git-main-kateryna-yakovlevas-projects.vercel.app", // Ваш домен на Vercel
+    "https://ai-git-main-kateryna-yakovlevas-projects.vercel.app",
+    "https://ai-chi-eight.vercel.app", // Ваш домен на Vercel
   ],
 };
 app.use(cors(corsOptions)); // Используем CORS с указанными опциями
